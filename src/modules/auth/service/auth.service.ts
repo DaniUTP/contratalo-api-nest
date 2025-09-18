@@ -62,7 +62,7 @@ export class AuthService implements AuthInterface {
             const info = this.jwtService.decode(token.split('|')[1]);
             const payload = this.cryptoService.decrypt(info.payload);
             const user = await this.userService.findByPk(payload.id, ["name", "last_name", "email", "phone"]);
-            return this.customResponse.responseBody({ name: user?.name, last_name: user?.last_name, email: user?.email, phone: user?.phone }, HttpStatus.OK);
+            return this.customResponse.responseBody({ name: user?.name, last_name: user?.last_name, email: user?.email, phone: Number(user?.phone)}, HttpStatus.OK);
         } catch (error) {
             this.logger.error(error.message);
             return this.customResponse.responseInternalError('internalServerError', language);
